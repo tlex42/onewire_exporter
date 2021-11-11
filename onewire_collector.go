@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/common/log"
@@ -39,6 +40,8 @@ func getTemperatureFromDevice(device os.FileInfo) Temp {
 		log.Fatal(err)
 	}
 	for i := 1; i <= 5; i++ {
+		// wait 10 milliseconds for fun and profit.
+		time.Sleep(10 * time.Millisecond)
 		content, err := ioutil.ReadFile("/sys/bus/w1/devices/" + device.Name() + "/w1_slave")
 		if err != nil {
 			log.Infof("Error reading device %s\n", device.Name())
@@ -72,6 +75,8 @@ func getTemperatureFromDevice(device os.FileInfo) Temp {
 			Value: tempInt / 1000.0,
 		}
 	}
+	// wait 50 milliseconds after an error
+	time.Sleep(50 * time.Millisecond)
 	return Temp{}
 }
 

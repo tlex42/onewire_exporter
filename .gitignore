@@ -1,2 +1,4 @@
 onewire_exporter
 dist/
+vendor/
+go.sum
